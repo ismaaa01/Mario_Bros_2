@@ -1,5 +1,7 @@
 package tp1_2.logic;
 
+import tp1_2.logic.gameobjects.*;
+
 public class Game {
 
 	public static final int DIM_X = 30;
@@ -7,12 +9,16 @@ public class Game {
 	private int nlives;
 	private int nLevel;
 	private int remainingTime;
+	private Mario mario;
 	private GameObjectContainer gameObjects;
 
 	//TODO fill your code
 	
 	public Game(int nLevel) {
-		// TODO Auto-generated constructor stub
+		this.nLevel = nLevel;
+		switch (nLevel){
+		case 0: initLevel0(); break;
+		}
 	}
 	
 	public String positionToString(int col, int row) {
@@ -20,6 +26,11 @@ public class Game {
 		Position pos = new Position(row, col);
 		
 		return this.gameObjects.postitionToString(pos);
+		
+	}
+	
+	public boolean  isSolid(int col, int row) {
+		return this.gameObjects.isSolid(col,row);
 	}
 
 	public boolean playerWins() {
@@ -72,22 +83,22 @@ public class Game {
 		// 1. Mapa
 		gameObjects = new GameObjectContainer();
 		for(int col = 0; col < 15; col++) {
-			gameObjects.add(new Land(new Position(13,col)));
-			gameObjects.add(new Land(new Position(14,col)));		
+			gameObjects.add(new Land(this,new Position(13,col)));
+			gameObjects.add(new Land(this,new Position(14,col)));		
 		}
 
-		gameObjects.add(new Land(new Position(Game.DIM_Y-3,9)));
-		gameObjects.add(new Land(new Position(Game.DIM_Y-3,12)));
+		gameObjects.add(new Land(this,new Position(Game.DIM_Y-3,9)));
+		gameObjects.add(new Land(this,new Position(Game.DIM_Y-3,12)));
 		for(int col = 17; col < Game.DIM_X; col++) {
-			gameObjects.add(new Land(new Position(Game.DIM_Y-2, col)));
-			gameObjects.add(new Land(new Position(Game.DIM_Y-1, col)));		
+			gameObjects.add(new Land(this,new Position(Game.DIM_Y-2, col)));
+			gameObjects.add(new Land(this,new Position(Game.DIM_Y-1, col)));		
 		}
 
-		gameObjects.add(new Land(new Position(9,2)));
-		gameObjects.add(new Land(new Position(9,5)));
-		gameObjects.add(new Land(new Position(9,6)));
-		gameObjects.add(new Land(new Position(9,7)));
-		gameObjects.add(new Land(new Position(5,6)));
+		gameObjects.add(new Land(this,new Position(9,2)));
+		gameObjects.add(new Land(this,new Position(9,5)));
+		gameObjects.add(new Land(this,new Position(9,6)));
+		gameObjects.add(new Land(this,new Position(9,7)));
+		gameObjects.add(new Land(this,new Position(5,6)));
 		
 		// Salto final
 		int tamX = 8, tamY= 8;
@@ -95,17 +106,17 @@ public class Game {
 		
 		for(int col = 0; col < tamX; col++) {
 			for (int fila = 0; fila < col+1; fila++) {
-				gameObjects.add(new Land(new Position(posIniY- fila, posIniX+ col)));
+				gameObjects.add(new Land(this,new Position(posIniY- fila, posIniX+ col)));
 			}
 		}
 
-		gameObjects.add(new ExitDoor(new Position(Game.DIM_Y-3, Game.DIM_X-1)));
+		gameObjects.add(new ExitDoor(this,new Position(Game.DIM_Y-3, Game.DIM_X-1)));
 
 		// 3. Personajes
 		this.mario = new Mario(this, new Position(Game.DIM_Y-3, 0));
 		gameObjects.add(this.mario);
 
-		gameObjects.add(new Goomba(this, new Position(0, 19)));
+		gameObjects.add(new Goombas(this, new Position(0, 19)));
 	}
 
 }

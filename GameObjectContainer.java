@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tp1_2.logic.gameobjects.GameObject;
+import tp1_2.view.Messages;
 
 public class GameObjectContainer {
+	
 	private List<GameObject> objects;
 
 	public GameObjectContainer() {
@@ -17,10 +19,24 @@ public class GameObjectContainer {
 		objects.add(object);
 	//TODO fill your code
 	}
+	public boolean  isSolid(int col, int row) {
+		Position p = new Position(row,col);
+		for (GameObject object:objects) {
+			if(object.isInPosition(p)) {
+				return (object.isSolid());
+			}
+		}
+		return false;
+	}
 	
 	public String postitionToString(Position pos) {
-		//TODO fill your code
-		return "";
+		String pos_string = Messages.EMPTY;
+		for (GameObject object:objects) {
+			if(object.isInPosition(pos)) {
+				pos_string += object.getIcon();
+			}
+		}
+		return pos_string;
 	}
 
 	//TODO fill your code

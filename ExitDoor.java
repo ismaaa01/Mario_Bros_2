@@ -1,19 +1,21 @@
 package tp1_2.logic.gameobjects;
+
 import tp1_2.view.Messages;
 import tp1_2.logic.Game;
 import tp1_2.logic.Position;
 
-public class Land extends GameObject {
+public class ExitDoor extends GameObject {
 	
+	private final String icono = Messages.EXIT_DOOR;
+
+
 	
-	private final String icono =Messages.LAND;
-	
-	public Land(Game game,Position pos) {
+	public  ExitDoor(Game game,Position pos){
 		super(game,pos);
 	}
 	
 	public boolean isSolid() {
-		return true;
+		return false;
 	}
 	
 	@Override

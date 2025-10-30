@@ -17,8 +17,7 @@ public abstract class GameObject { // TODO
 	}
 	
 	public boolean isInPosition(Position p) {
-		// TODO fill your code here, it should depends on the status of the object
-		return false;
+		return this.pos.equals(p);
 	}
  	
 	public boolean isAlive() {
@@ -29,8 +28,10 @@ public abstract class GameObject { // TODO
 		this.isAlive = false;
 	}
 	
+	
+	
 	// TODO implement and decide, Which one is abstract?
-	// public boolean isSolid()
+	public abstract boolean isSolid();
 	// public void update()
 	
 	public abstract String getIcon();
