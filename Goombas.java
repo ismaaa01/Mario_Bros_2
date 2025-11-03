@@ -32,4 +32,46 @@ public class Goombas extends MovingObject {
 		}
 	}
 
+
+
+	@Override
+	public boolean interactWith(GameItem other) {
+		 if (other.isInPosition(this.pos)) {
+	            return other.receiveInteraction(this);
+	        }
+	        return false;
+	}
+
+
+
+	@Override
+	public boolean receiveInteraction(Land obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean receiveInteraction(ExitDoor obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean receiveInteraction(Mario obj) {
+	    super.dead();
+        return true;
+	}
+
+
+
+	@Override
+	public boolean receiveInteraction(Goombas obj) {
+        return true;
+	}
+
+
 }

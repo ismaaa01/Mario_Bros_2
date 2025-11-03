@@ -28,6 +28,9 @@ public class Game {
 		return this.gameObjects.postitionToString(pos);
 		
 	}
+	public void marioArrived() {
+ 
+    }
 	
 	public boolean  isSolid(int col, int row) {
 		return this.gameObjects.isSolid(col,row);
@@ -74,7 +77,10 @@ public class Game {
 		// TODO Auto-generated method stub
 		
 	}
-	
+	public void doInteractionsFrom(GameObject from) {
+	    gameObjects.doInteractionsFrom(from);
+	}
+
 
 	private void initLevel0() {
 		this.nLevel = 0;

@@ -21,4 +21,36 @@ public class Land extends GameObject {
 		return icono;
 	}
 
+	@Override
+	public boolean interactWith(GameItem other) {
+		 if (other.isInPosition(this.pos)) {
+	            return other.receiveInteraction(this);
+	        }
+	        return false;
+	}
+
+	@Override
+	public boolean receiveInteraction(Land obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean receiveInteraction(ExitDoor obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean receiveInteraction(Mario obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean receiveInteraction(Goombas obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

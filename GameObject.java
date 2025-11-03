@@ -4,7 +4,7 @@ import tp1_2.logic.Action;
 import tp1_2.logic.Game;
 import tp1_2.logic.Position;
 
-public abstract class GameObject { // TODO 
+public abstract class GameObject implements GameItem{ // TODO 
 
 	protected Position pos; // If you can, make it private.
 	private boolean isAlive;
@@ -19,7 +19,9 @@ public abstract class GameObject { // TODO
 	public boolean isInPosition(Position p) {
 		return this.pos.equals(p);
 	}
- 	
+ 	public Position getPosition() {
+ 		return pos;
+ 	}
 	public boolean isAlive() {
 		return isAlive;
 	}
@@ -31,7 +33,9 @@ public abstract class GameObject { // TODO
 	
 	
 	// TODO implement and decide, Which one is abstract?
-	public abstract boolean isSolid();
+	public boolean isSolid() {
+		return false; // eso es por defecto luego sino cada clase dira
+	}
 	// public void update()
 	
 	public abstract String getIcon();

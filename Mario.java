@@ -18,12 +18,13 @@ public class Mario extends MovingObject {
 		super (game,pos);
 		this.actList = new ActionList(); 
 		super.dir = Action.RIGHT;
+		
 	}
 	
 	public void reset_actions() {
 		actList.eliminate();
 	}
-	
+
 	private void movement_player(Action act) {
 		if(!verifica_act(dir) && dir == Action.DOWN) {
 			dir_h = Action.STOP;
@@ -33,8 +34,8 @@ public class Mario extends MovingObject {
 			game.doInteractionsFrom(this);
 		}
 
-		if(!in_game()) {
-			game.mario_dies();
+		if(!pos.in_game()) {
+			super.dead();
 		}if(verifica_act(act)) {
 			pos.do_action(act);
 
@@ -77,5 +78,39 @@ public class Mario extends MovingObject {
 		}
 		return Messages.EMPTY;
 	}
+	
+	public boolean interactWith(GameItem other) {
+		if (other.isInPosition(this.pos)) {
+            return other.receiveInteraction(this);
+        }
+        
+		return false;
+	}
+	@Override
+	public boolean receiveInteraction(Land obj) {
+		this.stopFalling();
+		return true;
+	}
+
+	@Override
+	public boolean receiveInteraction(ExitDoor obj) {
+		game.marioArrived();
+        return true;
+	}
+
+	@Override
+	public boolean receiveInteraction(Mario obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean receiveInteraction(Goombas obj) {
+		// Si Goomba toca a Mario → Mario muere
+		if(this.isBig) isBig = false;
+		else super.dead();
+		return true;
+	}
+
 
 }
