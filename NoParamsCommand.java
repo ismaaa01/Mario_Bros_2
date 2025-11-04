@@ -10,6 +10,9 @@ public abstract class NoParamsCommand extends AbstractCommand {
 	public Command parse(String[] commandWords) {
 		if(matchCommand(commandWords[0])) 
 			return this;
+		if(commandWords[0].length() == 0) {
+			
+		}
 		return null;
 	}
 

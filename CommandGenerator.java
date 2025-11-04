@@ -9,13 +9,14 @@ public class CommandGenerator {
 
 	private static final List<Command> availableCommands = Arrays.asList(
 			//TODO fill with your code
+			new ActionCommand(),
 			new UpdateCommand(),
 			new HelpCommand(),
 			new ExitCommand(),
 			new ResetCommand()
 	);
 
-	public static Command parse(String[] commandWords) {		
+	public static Command parse(String[] commandWords) {	
 		for (Command c: availableCommands) {
 			if(c.parse(commandWords) != null){
 				return c;

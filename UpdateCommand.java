@@ -19,6 +19,11 @@ public class UpdateCommand extends NoParamsCommand {
 	public void execute(Game game, GameView view) {
 		// TODO Auto-generated method stub
 		game.update();
+		view.showGame();
 	}
 
+	public boolean matchCommand(String c) {
+		return super.matchCommand(c) || c.length() == 0;
+	}
+	
 }

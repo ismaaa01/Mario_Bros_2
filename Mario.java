@@ -15,8 +15,7 @@ public class Mario extends MovingObject {
 	private ActionList actList;
 	
 	public Mario(Game game, Position pos) {
-		super (game,pos);
-		this.actList = new ActionList(); 
+		super (game,pos,Action.RIGHT); 
 		super.dir = Action.RIGHT;
 		
 	}
@@ -25,6 +24,33 @@ public class Mario extends MovingObject {
 		actList.eliminate();
 	}
 
+	public void receive_actions(ActionList act_list) {
+		actList = act_list;
+	}
+	
+	public void reverse_dir() {
+		if(dir == Action.RIGHT) {
+			dir_h = Action.LEFT;
+		}else if(dir == Action.LEFT) {
+			dir_h = Action.RIGHT;
+		}else if(dir == Action.DOWN) {
+			dir_h = Action.STOP;
+		}
+	}
+	
+	public boolean verifica_act(Action act) {
+		if(isBig && super.verifica_act(act)) {
+			int nextCol = pos.get_col() + act.getX();
+        	int nextRow = pos.get_row() -1  + act.getY();
+			if (act == Action.DOWN) {
+			return !game.isSolid(nextCol, nextRow);
+			}
+        	if (!pos.in_game(nextCol, nextRow)) return false; 
+        	return !game.isSolid(nextCol, nextRow);
+		}
+		return super.verifica_act(act);
+	}
+	
 	private void movement_player(Action act) {
 		if(!verifica_act(dir) && dir == Action.DOWN) {
 			dir_h = Action.STOP;
@@ -59,13 +85,21 @@ public class Mario extends MovingObject {
 				game.doInteractionsFrom(this);
 			}
 		}else {
-			super.mouvement_auto();
-			game.doInteractionsFrom(this);
+			super.update();
 		}
 		reset_actions();
 	}
 	
-
+	public boolean isInPosition(Position p) {
+		if(isBig) {return super.isInPosition(p) || this.pos.equals(p.get_col(),p.get_row()+1);}
+		return super.isInPosition(p);
+	}
+	public void go_big() {
+		this.isBig = true;
+	}
+	public void go_small() {
+		this.isBig = false;
+	}
 	@Override
 	public String getIcon() {
 		if(super.isAlive()) {
@@ -79,17 +113,16 @@ public class Mario extends MovingObject {
 		return Messages.EMPTY;
 	}
 	
+	
 	public boolean interactWith(GameItem other) {
 		if (other.isInPosition(this.pos)) {
             return other.receiveInteraction(this);
         }
-        
 		return false;
 	}
 	@Override
 	public boolean receiveInteraction(Land obj) {
-		this.stopFalling();
-		return true;
+		return false;
 	}
 
 	@Override

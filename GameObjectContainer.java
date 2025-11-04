@@ -20,7 +20,7 @@ public class GameObjectContainer {
 		objects.add(object);
 	//TODO fill your code
 	}
-	public boolean  isSolid(int col, int row) {
+	public boolean isSolid(int col, int row) {
 		Position p = new Position(row,col);
 		for (GameObject object:objects) {
 			if(object.isInPosition(p)) {
@@ -39,6 +39,12 @@ public class GameObjectContainer {
 		}
 		return pos_string;
 	}
+	
+	public void update() {
+		for (GameObject obj: objects) {
+			obj.update();
+		}
+	}
 
 	//TODO fill your code
 	public void doInteractionsFrom(GameObject from) {
@@ -50,6 +56,8 @@ public class GameObjectContainer {
 	        }
 	    }
 	}
+	
+	
 
 	// TODO you should write a toString method to return the string that represents the object status
 	// @Override

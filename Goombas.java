@@ -10,7 +10,7 @@ public class Goombas extends MovingObject {
 	private final String icono =Messages.GOOMBA;
 	
 	public Goombas(Game game,Position pos) {
-		super(game,pos);
+		super(game,pos,Action.LEFT);
 		super.dir = Action.LEFT;
 	}
 	
@@ -27,9 +27,7 @@ public class Goombas extends MovingObject {
 		if(super.isAlive()) {
 			return icono;
 		}
-		else {
-			return Messages.EMPTY;
-		}
+		return Messages.EMPTY;
 	}
 
 

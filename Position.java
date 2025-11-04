@@ -22,7 +22,9 @@ public class Position {
 		return this.row == other.row && this.col == other.col;
 	}
 
-	
+	public boolean equals(int col, int row) {
+		return this.row == row && this.col == col;
+	}
 	public boolean in_game(int col, int row) {
 		return col >= 0 && col < Game.DIM_X && row >= 0 && row < Game.DIM_Y;
 	}
