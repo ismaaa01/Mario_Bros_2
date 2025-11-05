@@ -11,26 +11,14 @@ public class Goombas extends MovingObject {
 	
 	public Goombas(Game game,Position pos) {
 		super(game,pos,Action.LEFT);
-		super.dir = Action.LEFT;
 	}
 	
-	
-	
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public String getIcon() {
 		if(super.isAlive()) {
 			return icono;
 		}
 		return Messages.EMPTY;
 	}
-
-
 
 	@Override
 	public boolean interactWith(GameItem other) {
@@ -40,15 +28,11 @@ public class Goombas extends MovingObject {
 	        return false;
 	}
 
-
-
 	@Override
 	public boolean receiveInteraction(Land obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-
 
 	@Override
 	public boolean receiveInteraction(ExitDoor obj) {
@@ -56,15 +40,11 @@ public class Goombas extends MovingObject {
 		return false;
 	}
 
-
-
 	@Override
 	public boolean receiveInteraction(Mario obj) {
 	    super.dead();
         return true;
 	}
-
-
 
 	@Override
 	public boolean receiveInteraction(Goombas obj) {

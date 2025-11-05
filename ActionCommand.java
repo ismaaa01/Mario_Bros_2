@@ -37,7 +37,7 @@ public class ActionCommand extends AbstractCommand {
 
 	@Override
 	public Command parse(String[] commandWords) {
-		if(this.matchCommand(commandWords[0])) {
+		if(super.matchCommand(commandWords[0])) {
 			int act_p = 1;
 			while (act_p < commandWords.length) {
 				recorre_actions(commandWords[act_p]);

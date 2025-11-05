@@ -16,8 +16,6 @@ public class Mario extends MovingObject {
 	
 	public Mario(Game game, Position pos) {
 		super (game,pos,Action.RIGHT); 
-		super.dir = Action.RIGHT;
-		
 	}
 	
 	public void reset_actions() {
@@ -59,35 +57,34 @@ public class Mario extends MovingObject {
 			pos.do_action(dir);
 			game.doInteractionsFrom(this);
 		}
-
 		if(!pos.in_game()) {
 			super.dead();
 		}if(verifica_act(act)) {
 			pos.do_action(act);
 
 		}else {
-				if(act == Action.RIGHT) {
-					dir_h = Action.LEFT;
-				}else if(act == Action.LEFT) {
-					dir_h = Action.RIGHT;
-				}
+			reverse_dir();
 		}
+	}
+	
+	private boolean actions_to_do() {
+		return actList != null && actList.in_action();
 	}
 	
 	@Override
 	public void update() {
-		actList.simplify();
 		update_dir();
-		if(actList.in_action()) {
+		if(actions_to_do()) {
 			for(int i = 0; i < actList.size();i++) {
 				dir = actList.get(i);
 				movement_player(dir);
 				game.doInteractionsFrom(this);
 			}
+			reset_actions();
 		}else {
 			super.update();
 		}
-		reset_actions();
+		
 	}
 	
 	public boolean isInPosition(Position p) {
@@ -127,7 +124,6 @@ public class Mario extends MovingObject {
 
 	@Override
 	public boolean receiveInteraction(ExitDoor obj) {
-		game.marioArrived();
         return true;
 	}
 

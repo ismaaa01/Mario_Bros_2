@@ -29,6 +29,10 @@ public class Land extends GameObject {
 	        return false;
 	}
 
+	public void update() {
+		
+	}
+	
 	@Override
 	public boolean receiveInteraction(Land obj) {
 		// TODO Auto-generated method stub

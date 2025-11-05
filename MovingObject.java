@@ -10,8 +10,8 @@ public abstract class MovingObject extends GameObject {
 	protected Action dir_h;
 	public MovingObject(Game game, Position pos,Action initial ) {
 		super(game,pos);
-		this.dir = initial; //lo puse yo no se si es necesario
-		this.dir_h = this.dir;
+		this.dir = initial;
+		this.dir_h = initial;
 	}
 	
 	public boolean isSolid() {

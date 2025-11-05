@@ -30,8 +30,7 @@ public abstract class GameObject implements GameItem{ // TODO
 		this.isAlive = false;
 	}
 	
-	public void update() {
-	}
+	public abstract void update();
 	
 	// TODO implement and decide, Which one is abstract?
 	public boolean isSolid() {

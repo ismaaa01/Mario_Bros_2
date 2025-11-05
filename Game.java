@@ -30,9 +30,7 @@ public class Game {
 		return this.gameObjects.postitionToString(pos);
 		
 	}
-	public void marioArrived() {
- 
-    }
+
 	public void give_actions_to_mario(ActionList act_list ) {
 		this.mario.receive_actions(act_list);
 	}
