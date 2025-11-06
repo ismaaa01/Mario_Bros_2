@@ -2,6 +2,7 @@ package tp1_2.logic.gameobjects;
 
 import tp1_2.logic.Position;
 
+
 public  interface GameItem {
 	public  boolean isSolid();
 	public  boolean isAlive();

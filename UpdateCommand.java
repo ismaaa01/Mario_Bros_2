@@ -1,6 +1,6 @@
 package tp1_2.control.commands;
 
-import tp1_2.logic.Game;
+import tp1_2.logic.GameModel;
 import tp1_2.view.GameView;
 import tp1_2.view.Messages;
 
@@ -16,11 +16,20 @@ public class UpdateCommand extends NoParamsCommand {
 	}
 	
 	@Override
-	public void execute(Game game, GameView view) {
+	public void execute(GameModel game, GameView view) {
 		// TODO Auto-generated method stub
 		game.update();
 		view.showGame();
 	}
+	public Command parse(String[] commandWords) {
+		if(matchCommand(commandWords[0])) 
+			return this;
+		if(commandWords[0].length()==0) {
+			return this;
+		}
+		return null;
+	}
+
 
 	public boolean matchCommand(String c) {
 		return super.matchCommand(c) || c.length() == 0;

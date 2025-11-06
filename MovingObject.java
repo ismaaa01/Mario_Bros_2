@@ -2,13 +2,13 @@ package tp1_2.logic.gameobjects;
 
 import tp1_2.logic.Position;
 import tp1_2.logic.Action;
-import tp1_2.logic.Game;
+import tp1_2.logic.GameWorld;
 
 public abstract class MovingObject extends GameObject {
 	
 	protected Action dir;
 	protected Action dir_h;
-	public MovingObject(Game game, Position pos,Action initial ) {
+	public MovingObject(GameWorld game, Position pos,Action initial ) {
 		super(game,pos);
 		this.dir = initial;
 		this.dir_h = initial;
@@ -47,7 +47,6 @@ public abstract class MovingObject extends GameObject {
 	
 	protected void mouvement_auto() {
 		if(super.isAlive() && pos.in_game()) {
-			update_dir();
 			if(verifica_act(dir)) {
 				pos.do_action(dir);
 			}else {
@@ -59,6 +58,7 @@ public abstract class MovingObject extends GameObject {
 	public void update() {
 		update_dir();
 		mouvement_auto();
+		game.doInteractionsFrom(this);
 		if(!pos.in_game(pos.get_col(),pos.get_row())) {
 			super.dead();
 		}

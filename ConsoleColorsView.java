@@ -3,7 +3,7 @@ package tp1_2.view;
 import static tp1_2.util.MyStringUtils.center;
 import static tp1_2.util.MyStringUtils.repeat;
 
-import tp1_2.logic.Game;
+import tp1_2.logic.GameStatus;
 import tp1_2.util.MyStringUtils;
 
 public class ConsoleColorsView extends ConsoleView {
@@ -27,7 +27,7 @@ public class ConsoleColorsView extends ConsoleView {
 	private static final String BOX_CELL = COLOR_BOX_BACKGROUND + center("?", CELL_SIZE) + ConsoleColorsAnsiCodes.ANSI_RESET;
 	private static final String EMPTY_BOX = COLOR_BOX_BACKGROUND + center(Messages.EMPTY, CELL_SIZE) + ConsoleColorsAnsiCodes.ANSI_RESET;
 
-	public ConsoleColorsView(Game game) {
+	public ConsoleColorsView(GameStatus game) {
 		super(game);
 	}
 	

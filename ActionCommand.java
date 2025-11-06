@@ -1,6 +1,6 @@
 package tp1_2.control.commands;
 
-import tp1_2.logic.Game;
+import tp1_2.logic.GameModel;
 import tp1_2.view.GameView;
 import tp1_2.view.Messages;
 import tp1_2.logic.ActionList;
@@ -27,7 +27,7 @@ public class ActionCommand extends AbstractCommand {
 	}
 	
 	@Override
-	public void execute(Game game, GameView view) {
+	public void execute(GameModel game, GameView view) {
 		// TODO Auto-generated method stub
 		act_list.simplify();
 		game.give_actions_to_mario(act_list);
@@ -37,6 +37,7 @@ public class ActionCommand extends AbstractCommand {
 
 	@Override
 	public Command parse(String[] commandWords) {
+		if(commandWords.length < 2) {return null;}
 		if(super.matchCommand(commandWords[0])) {
 			int act_p = 1;
 			while (act_p < commandWords.length) {

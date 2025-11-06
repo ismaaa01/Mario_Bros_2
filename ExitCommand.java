@@ -1,6 +1,6 @@
 package tp1_2.control.commands;
 
-import tp1_2.logic.Game;
+import tp1_2.logic.GameModel;
 import tp1_2.view.GameView;
 import tp1_2.view.Messages;
 
@@ -17,9 +17,7 @@ public class ExitCommand extends NoParamsCommand{
 	}
 
 	@Override
-	public void execute(Game game, GameView view){
-		// You should let the game know that you are leaving so that 
-		// if it needs to close something, it can close it and finish.
+	public void execute(GameModel game, GameView view){
 	    game.exit(); 	
 	}
 

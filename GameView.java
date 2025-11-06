@@ -1,12 +1,12 @@
 package tp1_2.view;
 
-import tp1_2.logic.Game;
+import tp1_2.logic.GameStatus;
 
 public abstract class GameView implements ViewInterface{
 
-	protected Game game;
+	protected GameStatus game;
 	
-	public GameView(Game game) {
+	public GameView(GameStatus game) {
 		this.game = game;
 	}
 	

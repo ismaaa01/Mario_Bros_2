@@ -3,18 +3,18 @@ package tp1_2.logic.gameobjects;
 import tp1_2.view.Messages;
 import tp1_2.logic.Action;
 import tp1_2.logic.ActionList;
-import tp1_2.logic.Game;
+import tp1_2.logic.GameWorld;
 import tp1_2.logic.Position;
 
 public class Mario extends MovingObject {
-
+	
 	private boolean isBig;
 	private final String icono_right = Messages.MARIO_RIGHT;
 	private final String icono_left = Messages.MARIO_LEFT;
 	private final String icono_stop = Messages.MARIO_STOP;
 	private ActionList actList;
 	
-	public Mario(Game game, Position pos) {
+	public Mario(GameWorld game, Position pos) {
 		super (game,pos,Action.RIGHT); 
 	}
 	
@@ -37,6 +37,7 @@ public class Mario extends MovingObject {
 	}
 	
 	public boolean verifica_act(Action act) {
+		if(act == Action.LEFT || act == Action.RIGHT || act == Action.STOP) {dir_h = act;}
 		if(isBig && super.verifica_act(act)) {
 			int nextCol = pos.get_col() + act.getX();
         	int nextRow = pos.get_row() -1  + act.getY();
@@ -49,21 +50,21 @@ public class Mario extends MovingObject {
 		return super.verifica_act(act);
 	}
 	
-	private void movement_player(Action act) {
-		if(!verifica_act(dir) && dir == Action.DOWN) {
-			dir_h = Action.STOP;
-		}
-		while(verifica_act(dir) &&	pos.in_game() && dir == Action.DOWN) {
-			pos.do_action(dir);
-			game.doInteractionsFrom(this);
-		}
-		if(!pos.in_game()) {
-			super.dead();
-		}if(verifica_act(act)) {
-			pos.do_action(act);
-
+	private void movement_player() {
+		if(dir == Action.DOWN) {
+			if(!verifica_act(dir)) {
+				dir_h = Action.STOP;
+			}else {
+				while(verifica_act(dir) && pos.in_game() && dir == Action.DOWN) {
+					pos.do_action(dir);
+					game.doInteractionsFrom(this);
+				}
+				if(!pos.in_game()) {
+					super.dead();
+				}
+			}
 		}else {
-			reverse_dir();
+			super.mouvement_auto();
 		}
 	}
 	
@@ -73,18 +74,20 @@ public class Mario extends MovingObject {
 	
 	@Override
 	public void update() {
-		update_dir();
 		if(actions_to_do()) {
 			for(int i = 0; i < actList.size();i++) {
 				dir = actList.get(i);
-				movement_player(dir);
+				movement_player();
 				game.doInteractionsFrom(this);
 			}
 			reset_actions();
 		}else {
 			super.update();
 		}
-		
+		update_dir();
+		if(!super.isAlive()) {
+			game.mario_dies();
+		}
 	}
 	
 	public boolean isInPosition(Position p) {
@@ -110,34 +113,31 @@ public class Mario extends MovingObject {
 		return Messages.EMPTY;
 	}
 	
-	
 	public boolean interactWith(GameItem other) {
-		if (other.isInPosition(this.pos)) {
-            return other.receiveInteraction(this);
+		boolean can_interact = other.isInPosition(this.pos) ;
+		boolean has_interacted = false;
+		if (can_interact && this.isAlive()) {
+			has_interacted = other.receiveInteraction(this);
         }
-		return false;
-	}
-	@Override
-	public boolean receiveInteraction(Land obj) {
-		return false;
+		return can_interact && has_interacted;
 	}
 
 	@Override
 	public boolean receiveInteraction(ExitDoor obj) {
-        return true;
-	}
-
-	@Override
-	public boolean receiveInteraction(Mario obj) {
-		// TODO Auto-generated method stub
-		return false;
+        return false;
 	}
 
 	@Override
 	public boolean receiveInteraction(Goombas obj) {
-		// Si Goomba toca a Mario → Mario muere
-		if(this.isBig) isBig = false;
-		else super.dead();
+		if(dir != Action.DOWN) {
+			if(this.isBig) { 
+				isBig = false;
+				obj.receiveInteraction(this);
+			}
+			else if (obj.isAlive()) { 
+				super.dead();
+			}
+		}
 		return true;
 	}
 

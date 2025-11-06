@@ -4,21 +4,30 @@ package tp1_2.logic;
 import tp1_2.logic.gameobjects.*;
 import tp1_2.logic.ActionList;
 
-public class Game {
+public class Game implements GameModel, GameStatus,GameWorld{
 
+	
 	public static final int DIM_X = 30;
 	public static final int DIM_Y = 15;
+	private final int sum_points = 100;
 	private int nlives;
 	private int nLevel;
 	private int remainingTime;
+	private int points;
 	private Mario mario;
 	private GameObjectContainer gameObjects;
+	private boolean win;
+	private boolean running;
 
-	//TODO fill your code
 	
 	public Game(int nLevel) {
+		this.points = 0;
 		this.nLevel = nLevel;
+		this.nlives = 3;
+		this.win = false;
+		this.running = true;
 		switch (nLevel){
+		case 1: initLevel1(); break;
 		case 0: initLevel0(); break;
 		}
 	}
@@ -36,31 +45,39 @@ public class Game {
 	}
 	
 	public void update() {
+		this.remainingTime--;
 		gameObjects.update();
 	}
 	
 	public boolean isSolid(int col, int row) {
 		return this.gameObjects.isSolid(col,row);
 	}
-
+	
 	public boolean playerWins() {
-		// TODO Auto-generated method stub
-		return false;
+		return win;
 	}
+	
 
 	public int remainingTime() {
 		// TODO Auto-generated method stub
-		return 100;
+		return this.remainingTime;
 	}
 
 	public int points() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.points;
 	}
 
+	public void marioExited() {
+		int victoryPoints = this.remainingTime * 10;
+		this.points += victoryPoints;
+		this.remainingTime = 0;
+		this.win = true;
+	}
+	
 	public int numLives() {
 		// TODO Auto-generated method stub
-		return 3;
+		return this.nlives;
 	}
 	public void reset(int num_level) {
 		switch (num_level){
@@ -82,26 +99,38 @@ public class Game {
 		return "TODO: Hola soy el game";
 	}
 
+	public void mario_dies() {
+		if(nlives == 1) {
+			this.nlives--;
+		}else {
+			this.nlives--;
+			reset(this.nLevel);
+		}
+	}
+	
 	public boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return win || nlives == 0 || remainingTime == 0 || !running;
 	}
 
 	public boolean playerLoses() {
-		// TODO Auto-generated method stub
-		return false;
+		return nlives == 0 || remainingTime == 0;
 	}
 	
-	// Not mandatory but recommended
 	public void exit() {
-		// TODO Auto-generated method stub
-		
+		running = false;
 	}
+	
+	public void addPoints(int pointsToAdd) {
+		this.points += pointsToAdd;
+	}
+	
 	public void doInteractionsFrom(GameObject from) {
-	    gameObjects.doInteractionsFrom(from);
+	    if(gameObjects.doInteractionsFrom(from)) { 
+	    	addPoints(sum_points);
+	    }
 	}
 
-
+	// Generar mapas:
 	private void initLevel0() {
 		this.nLevel = 0;
 		this.remainingTime = 100;
@@ -144,6 +173,7 @@ public class Game {
 		mario.go_big();
 		gameObjects.add(new Goombas(this, new Position(0, 19)));
 	}
+	
 	public void initLevel1() {
 		
 		this.nLevel = 1;

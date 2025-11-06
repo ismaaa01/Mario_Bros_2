@@ -3,7 +3,6 @@ package tp1_2.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import tp1_2.logic.gameobjects.GameItem;
 import tp1_2.logic.gameobjects.GameObject;
 import tp1_2.view.Messages;
 
@@ -47,14 +46,23 @@ public class GameObjectContainer {
 	}
 
 	//TODO fill your code
-	public void doInteractionsFrom(GameObject from) {
-	    for (GameObject other : objects) {
-	        if (other != from && other.isAlive() && from.isAlive()) {
-	            if (other.isInPosition(from.getPosition())) {
-	                from.interactWith(other);
-	            }
-	        }
+	public boolean doInteractionsFrom(GameObject from) {
+		boolean interact = false;
+	    for (GameObject obj : objects) {
+	    	if(from != obj) {
+	    		if(interact == false) {
+	    			interact = obj.interactWith(from);
+	    		}
+	    		if(interact == false) {
+	    			interact = from.interactWith(obj);
+	    		}
+	    		else{
+	    			obj.interactWith(from);
+	    			from.interactWith(obj);
+	    		}
+	    	}
 	    }
+	    return interact;
 	}
 	
 	

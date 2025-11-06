@@ -2,14 +2,15 @@ package tp1_2.logic.gameobjects;
 
 import tp1_2.view.Messages;
 import tp1_2.logic.Action;
-import tp1_2.logic.Game;
+import tp1_2.logic.GameWorld;
 import tp1_2.logic.Position;
 
 public class Goombas extends MovingObject {
 	
-	private final String icono =Messages.GOOMBA;
+
+	private final String icono = Messages.GOOMBA;
 	
-	public Goombas(Game game,Position pos) {
+	public Goombas(GameWorld game,Position pos) {
 		super(game,pos,Action.LEFT);
 	}
 	
@@ -22,34 +23,24 @@ public class Goombas extends MovingObject {
 
 	@Override
 	public boolean interactWith(GameItem other) {
-		 if (other.isInPosition(this.pos)) {
-	            return other.receiveInteraction(this);
-	        }
-	        return false;
-	}
-
-	@Override
-	public boolean receiveInteraction(Land obj) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean can_interact = other.isInPosition(this.pos);
+		boolean has_interacted = false;
+		if (can_interact && this.isAlive()) {
+			has_interacted = other.receiveInteraction(this); 
+        }
+		return can_interact && has_interacted;
 	}
 
 	@Override
 	public boolean receiveInteraction(ExitDoor obj) {
-		// TODO Auto-generated method stub
-		return false;
+		reverse_dir();
+		return true;
 	}
 
 	@Override
 	public boolean receiveInteraction(Mario obj) {
 	    super.dead();
+	    obj.receiveInteraction(this);
         return true;
 	}
-
-	@Override
-	public boolean receiveInteraction(Goombas obj) {
-        return true;
-	}
-
-
 }

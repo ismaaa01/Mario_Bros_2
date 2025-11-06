@@ -1,6 +1,6 @@
 package tp1_2.control.commands;
 
-import tp1_2.logic.Game;
+import tp1_2.logic.GameModel;
 import tp1_2.view.GameView;
 import tp1_2.view.Messages;
 
@@ -18,7 +18,7 @@ public class ResetCommand extends AbstractCommand {
 	}
 	
 	@Override
-	public void execute(Game game, GameView view) {
+	public void execute(GameModel game, GameView view) {
 		// TODO Auto-generated method stub
 		if(cambio_level) {
 			if(nLevel != 1 && nLevel != 0 ) {

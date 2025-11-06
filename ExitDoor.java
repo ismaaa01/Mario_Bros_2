@@ -1,7 +1,7 @@
 package tp1_2.logic.gameobjects;
 
 import tp1_2.view.Messages;
-import tp1_2.logic.Game;
+import tp1_2.logic.GameWorld;
 import tp1_2.logic.Position;
 
 public class ExitDoor extends GameObject {
@@ -10,12 +10,8 @@ public class ExitDoor extends GameObject {
 
 
 	
-	public  ExitDoor(Game game,Position pos){
+	public  ExitDoor(GameWorld game,Position pos){
 		super(game,pos);
-	}
-	
-	public boolean isSolid() {
-		return false;
 	}
 	
 	@Override
@@ -23,39 +19,21 @@ public class ExitDoor extends GameObject {
 		return icono;
 	}
 
-	@Override
+	public void update() {}
+
 	public boolean interactWith(GameItem other) {
-		 if (other.isInPosition(this.pos)) {
-	            return other.receiveInteraction(this);
-	        }
-	        return false;
+		boolean can_interact = other.isInPosition(this.pos);
+		boolean has_interacted = false;
+		if (can_interact && this.isAlive()) {
+			has_interacted = other.receiveInteraction(this); 
+        }
+		return can_interact && has_interacted;
 	}
-
-	@Override
-	public boolean receiveInteraction(Land obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean receiveInteraction(ExitDoor obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	
 	@Override
 	public boolean receiveInteraction(Mario obj) {
-		  if (this.pos.equals(obj.pos)) {
-	            game.playerWins();//no se como es mario salio por la puerta
-	            return true;
-	        }
-	        return false;
-	}
-
-	@Override
-	public boolean receiveInteraction(Goombas obj) {
-		// TODO Auto-generated method stub
-		return false;
+	     game.marioExited();
+	     return false;
 	}
 
 }
