@@ -28,7 +28,6 @@ public class ActionCommand extends AbstractCommand {
 	
 	@Override
 	public void execute(GameModel game, GameView view) {
-		// TODO Auto-generated method stub
 		act_list.simplify();
 		game.give_actions_to_mario(act_list);
 		game.update();
@@ -38,7 +37,7 @@ public class ActionCommand extends AbstractCommand {
 	@Override
 	public Command parse(String[] commandWords) {
 		if(commandWords.length < 2) {return null;}
-		if(super.matchCommand(commandWords[0])) {
+		if(super.matchCommandName(commandWords[0])) {
 			int act_p = 1;
 			while (act_p < commandWords.length) {
 				recorre_actions(commandWords[act_p]);

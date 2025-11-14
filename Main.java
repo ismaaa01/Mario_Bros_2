@@ -4,8 +4,8 @@ import java.util.Locale;
 
 import tp1_2.control.Controller;
 import tp1_2.logic.Game;
-import tp1_2.view.ConsoleColorsView;
 import tp1_2.view.ConsoleView;
+import tp1_2.view.ConsoleColorsView;
 import tp1_2.view.GameView;
 import tp1_2.view.Messages;
 
@@ -18,7 +18,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// Required to avoid issues with tests
-        Locale.of("es", "ES");
+        Locale.of("en","US");
 		
 		try {
 			
@@ -26,7 +26,7 @@ public class Main {
 			if (args.length != 0) nLevel = Integer.parseInt(args[0]);
 
             Game game = new Game(nLevel);
-            GameView view = new ConsoleView(game);
+            GameView view = args.length > 1 ? new ConsoleView(game):new ConsoleColorsView(game);
             Controller controller = new Controller(game, view);
 					
 			controller.run();

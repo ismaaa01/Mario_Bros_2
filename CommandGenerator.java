@@ -8,7 +8,7 @@ import tp1_2.view.Messages;
 public class CommandGenerator {
 
 	private static final List<Command> availableCommands = Arrays.asList(
-			//TODO fill with your code
+			new AddObjectCommand(),
 			new ActionCommand(),
 			new UpdateCommand(),
 			new ResetCommand(),
@@ -33,7 +33,6 @@ public class CommandGenerator {
 		
 		for (Command c: availableCommands) {
 			commands.append(c.helpText());
-			//TODO fill with your code
 		}
 		
 		return commands.toString();

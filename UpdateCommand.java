@@ -17,22 +17,18 @@ public class UpdateCommand extends NoParamsCommand {
 	
 	@Override
 	public void execute(GameModel game, GameView view) {
-		// TODO Auto-generated method stub
 		game.update();
 		view.showGame();
 	}
 	public Command parse(String[] commandWords) {
-		if(matchCommand(commandWords[0])) 
+		if(matchCommand(commandWords[0]) || commandWords[0].length()==0) 
 			return this;
-		if(commandWords[0].length()==0) {
-			return this;
-		}
 		return null;
 	}
 
 
 	public boolean matchCommand(String c) {
-		return super.matchCommand(c) || c.length() == 0;
+		return super.matchCommandName(c) || c.length() == 0;
 	}
 	
 }

@@ -15,7 +15,6 @@ public final class TestsUtils {
 	private TestsUtils() {} // prevents instances (static class)
 
 	private static boolean areSegmentsEquivalent(String segment1, String segment2) {
-	    // Ordena los caracteres de ambos segmentos y los compara
 	    return sortCharacters(segment1.trim()).equals(sortCharacters(segment2.trim()));
 	}
 
@@ -30,30 +29,28 @@ public final class TestsUtils {
 
 	
 	public static boolean areLinesEquivalent(String expectedLine, String actualLine) {
-        // Dividir ambas líneas por los delimitadores '|'
         String[] expectedParts = expectedLine.split("┃");
         String[] actualParts = actualLine.split("┃");
 
-        // 1. Ambas líneas deben tener exactamente dos delimitadores
         if (expectedParts.length != 3 || actualParts.length != 3) {
             return false;
         }
 
-        // 2. El contenido fuera de los delimitadores debe ser idéntico
+ 
         if (!expectedParts[0].equals(actualParts[0]) || !expectedParts[2].equals(actualParts[2])) {
             return false;
         }
 
-        // 3. El contenido dentro de los delimitadores debe dividirse en DIM_X trozos
-        String[] expectedSegments = splitIntoSegments(expectedParts[1], tp1.logic.Game.DIM_X);
-        String[] actualSegments = splitIntoSegments(actualParts[1], tp1.logic.Game.DIM_X);
+ 
+        String[] expectedSegments = splitIntoSegments(expectedParts[1], tp1_2.logic.Game.DIM_X);
+        String[] actualSegments = splitIntoSegments(actualParts[1], tp1_2.logic.Game.DIM_X);
 
         if (expectedSegments == null || actualSegments == null) {
-            return false; // Si no se pueden dividir correctamente
+            return false;
         }
 
-        // Comparar cada segmento entre ambas líneas
-        for (int i = 0; i < tp1.logic.Game.DIM_X; i++) {
+
+        for (int i = 0; i < tp1_2.logic.Game.DIM_X; i++) {
             if (!areSegmentsEquivalent(expectedSegments[i], actualSegments[i])) {
             	//System.out.println("Expected segment: " + expectedSegments[i]);
             	//System.out.println("Actual   segment: " + actualSegments[i]);
@@ -61,13 +58,12 @@ public final class TestsUtils {
             }
         }
 
-        // Si todas las condiciones se cumplen, las líneas son equivalentes
         return true;
     }
 
     private static String[] splitIntoSegments(String content, int segments) {
         if (content.length() % segments != 0) {
-            return null; // No se puede dividir en partes iguales
+            return null; 
         }
 
         int segmentLength = content.length() / segments;

@@ -2,7 +2,7 @@ package tp1_2.logic;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import tp1_2.logic.gameobjects.GameItem;
 import tp1_2.logic.gameobjects.GameObject;
 import tp1_2.view.Messages;
 
@@ -14,11 +14,10 @@ public class GameObjectContainer {
 		objects = new ArrayList<GameObject>();
 	}
 	
-	// Only one add method (polymorphism)
 	public void add(GameObject object) {
-		objects.add(object);
-	//TODO fill your code
+		this.objects.add(object);
 	}
+	
 	public boolean isSolid(int col, int row) {
 		Position p = new Position(row,col);
 		for (GameObject object:objects) {
@@ -40,34 +39,40 @@ public class GameObjectContainer {
 	}
 	
 	public void update() {
-		for (GameObject obj: objects) {
-			obj.update();
+		for (int i = 0; i < objects.size();i++) {
+			if(objects.get(i).isAlive()) {
+				objects.get(i).update();
+			}
 		}
+	    clean();
 	}
 
-	//TODO fill your code
-	public boolean doInteractionsFrom(GameObject from) {
+	private boolean clean() {
+		boolean removed = false;
+		for(int i = 0; i < objects.size();i++) {
+			if(!objects.get(i).isAlive()) {
+				objects.remove(i);
+				removed = true;
+			}
+		}
+		return removed;
+	}
+	
+	public boolean doInteractionsFrom(GameItem from) {
 		boolean interact = false;
-	    for (GameObject obj : objects) {
-	    	if(from != obj) {
-	    		if(interact == false) {
-	    			interact = obj.interactWith(from);
-	    		}
-	    		if(interact == false) {
-	    			interact = from.interactWith(obj);
-	    		}
-	    		else{
-	    			obj.interactWith(from);
-	    			from.interactWith(obj);
-	    		}
-	    	}
+		for (int i = 0; i < objects.size();i++) {
+			if(objects.get(i).isAlive() && from.isAlive()) {
+				from.interactWith(objects.get(i));
+				objects.get(i).interactWith(from);
+			}
 	    }
 	    return interact;
 	}
 	
+	    
 	
-
-	// TODO you should write a toString method to return the string that represents the object status
-	// @Override
-	// public String toString()
+	@Override
+	public String toString() {
+		return "I'm the game object container";
+	}
 }

@@ -1,6 +1,5 @@
 package tp1_2.logic;
 
-import tp1_2.logic.Action;
 import java.util.*;
 
 public class ActionList {
@@ -10,8 +9,6 @@ public class ActionList {
 	private int n_up;
 	private boolean down;
 	private boolean vacio;
-
-	
 	
 	public ActionList() {
 		actList = new ArrayList<>();

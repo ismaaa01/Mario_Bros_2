@@ -1,8 +1,5 @@
 package tp1_2.logic;
 
-import tp1_2.logic.Action;
-import tp1_2.logic.Game;
-
 /**
  * 
  * TODO: Immutable class to encapsulate and manipulate positions in the game board
@@ -44,6 +41,5 @@ public class Position {
 	}
 	
 }
-	//TODO fill your code
 
 

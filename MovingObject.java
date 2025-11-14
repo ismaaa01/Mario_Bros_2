@@ -8,6 +8,13 @@ public abstract class MovingObject extends GameObject {
 	
 	protected Action dir;
 	protected Action dir_h;
+	
+	public MovingObject(String Name,String Shortcut,Action initial) {
+		super(Name,Shortcut);
+		dir = initial;
+		dir_h = initial;
+	}
+	
 	public MovingObject(GameWorld game, Position pos,Action initial ) {
 		super(game,pos);
 		this.dir = initial;
@@ -18,13 +25,27 @@ public abstract class MovingObject extends GameObject {
 		return false;
 	}
 
+	public GameObject parse(String[] info,Position pos) {
+		if(matchObjName(info[0])) {
+			this.pos = pos;
+			if(info.length > 1) {
+				Action initial = give_act(info[1]);
+				if(initial != null) {
+					dir = initial;
+					dir_h = initial;
+				}
+			}
+			return this;
+		}
+		return null;
+	}
+	
 	public void update_dir() {
 		if(!game.isSolid(pos.get_col(),pos.get_row()+Action.DOWN.getY())) {
 			dir = Action.DOWN;
 		}else {
 			dir = dir_h;
 		}
-
 	}
 	
 	protected boolean verifica_act(Action act) {
@@ -37,7 +58,7 @@ public abstract class MovingObject extends GameObject {
         return !game.isSolid(nextCol, nextRow);
 	}
 
-	protected void reverse_dir() {
+	public void reverse_dir() {
 		if(dir == Action.RIGHT) {
 			dir_h = Action.LEFT;
 		}else if(dir == Action.LEFT) {
@@ -65,4 +86,17 @@ public abstract class MovingObject extends GameObject {
 	}
 	@Override
 	public abstract String getIcon();
+	
+	protected Action give_act(String dir_initial) {
+		if(dir_initial.equalsIgnoreCase("LEFT") || dir_initial.equalsIgnoreCase("L")) {
+			return Action.LEFT;
+		}
+		if(dir_initial.equalsIgnoreCase("STOP") || dir_initial.equalsIgnoreCase("S")) {
+			return Action.STOP;
+		}
+		if(dir_initial.equalsIgnoreCase("RIGHT") || dir_initial.equalsIgnoreCase("R")) {
+			return Action.RIGHT;
+		}
+		return null;
+	}
 }

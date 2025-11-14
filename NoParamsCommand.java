@@ -9,7 +9,7 @@ public abstract class NoParamsCommand extends AbstractCommand {
 	@Override
 	public Command parse(String[] commandWords) {
 		if (commandWords.length > 1) {return null;}
-		if(matchCommand(commandWords[0])) 
+		if(matchCommandName(commandWords[0])) 
 			return this;
 		return null;
 	}

@@ -2,7 +2,7 @@ package tp1_2.control;
 
 import tp1_2.control.commands.Command;
 import tp1_2.control.commands.CommandGenerator;
-import tp1_2.logic.Game;
+import tp1_2.logic.GameModel;
 import tp1_2.view.GameView;
 import tp1_2.view.Messages;
 
@@ -11,10 +11,10 @@ import tp1_2.view.Messages;
  */
 public class Controller {
 
-	private Game game;
+	private GameModel game;
 	private GameView view;
 
-	public Controller(Game game, GameView view) {
+	public Controller(GameModel game, GameView view) {
 		this.game = game;
 		this.view = view;
 	}

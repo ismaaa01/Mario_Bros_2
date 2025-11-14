@@ -32,8 +32,5 @@ public abstract class AbstractCommand implements Command {
 	public String helpText(){
 		return Messages.LINE_TAB.formatted(Messages.COMMAND_HELP_TEXT.formatted(getDetails(), getHelp()));
 	}
-	
-	protected boolean matchCommand(String com) {
-		return name.equalsIgnoreCase(com) || shortcut.equalsIgnoreCase(com);
-	}
+
 }

@@ -22,7 +22,4 @@ public enum Action {
 	public int getY() {
 		return y;
 	}
-	
-	//TODO fill your code
-	
 }

@@ -102,10 +102,40 @@ public class Messages {
 	public static final String COMMAND_ACTION_SHORTCUT = "a"; 
 	public static final String COMMAND_ACTION_DETAILS = "[a]ction [[R]IGHT | [L]EFT | [U]P | [D]OWN | [S]TOP]+"; 
 	public static final String COMMAND_ACTION_HELP = "user performs actions"; 
+	
+	// ADDOBJECT
+	public static final String COMMAND_ADDOBJECT_NAME = "addObject"; 
+	public static final String COMMAND_ADDOBJECT_SHORTCUT = "aO"; 
+	public static final String COMMAND_ADDOBJECT_DETAILS = "[a]dd[O]bject <object_description>"; 
+	public static final String COMMAND_ADDOBJECT_HELP = "adds to the board the object given by object_description."
+			+"\n"+ "      <object_description> = (col,row) objName [dir [BIG|SMALL]]. Ej. (12,3) Mario LEFT SMALL"; 
 
+	//LAND
+	public static final String LAND_NAME = "land";
+	public static final String LAND_SHORTCUT = "l";
+	
+	//MARIO
+	public static final String MARIO_NAME = "mario";
+	public static final String MARIO_SHORTCUT = "m";
+	
+	//GOOMBA
+	public static final String GOOMBA_NAME = "goomba";
+	public static final String GOOMBA_SHORTCUT = "g";
+	
+	//EXITDOOR
+	public static final String EXITDOOR_NAME = "exitdoor";
+	public static final String EXITDOOR_SHORTCUT = "ed";
+	
+	//BOX
+	public static final String BOX_NAME = "box";
+	public static final String BOX_SHORTCUT = "b";
+	
+	//MUSHROOM
+	public static final String MUSHROOM_NAME = "mushroom";
+	public static final String MUSHROOM_SHORTCUT = "mu";
 	
 
-//Symbols
+	//Symbols
 	public static final String EMPTY = "";
 	public static final String LAND = MyStringUtils.repeat("▓",ConsoleView.CELL_SIZE);
 	public static final String EXIT_DOOR = "🚪";

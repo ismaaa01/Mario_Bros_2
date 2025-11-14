@@ -7,8 +7,12 @@ import tp1_2.logic.Position;
 public class ExitDoor extends GameObject {
 	
 	private final String icono = Messages.EXIT_DOOR;
-
-
+	private static final String Name = Messages.EXITDOOR_NAME;
+	private static final String Shortcut = Messages.EXITDOOR_SHORTCUT;
+	
+	public ExitDoor() {
+		super(Name,Shortcut);
+	}
 	
 	public  ExitDoor(GameWorld game,Position pos){
 		super(game,pos);

@@ -8,6 +8,13 @@ public class Land extends GameObject {
 	
 	
 	private final String icono =Messages.LAND;
+	private static final String Name = Messages.LAND_NAME;
+	private static final String Shortcut = Messages.LAND_SHORTCUT;
+	
+	
+	public Land() {
+		super(Name,Shortcut);
+	}
 	
 	public Land(GameWorld game,Position pos) {
 		super(game,pos);
@@ -22,12 +29,5 @@ public class Land extends GameObject {
 		return icono;
 	}
 
-	@Override
-	public boolean interactWith(GameItem other) {
-		 if (other.isInPosition(this.pos)) {
-	            return other.receiveInteraction(this);
-	        }
-	     return false;
-	}
 	public void update() {}
 }

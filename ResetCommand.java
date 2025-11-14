@@ -19,9 +19,8 @@ public class ResetCommand extends AbstractCommand {
 	
 	@Override
 	public void execute(GameModel game, GameView view) {
-		// TODO Auto-generated method stub
 		if(cambio_level) {
-			if(nLevel != 1 && nLevel != 0 ) {
+			if(nLevel != 1 && nLevel != 0 && nLevel != -1 && nLevel != 2) {
 				view.showError(Messages.INVALID_LEVEL_NUMBER);
 			}else {
 				game.reset(nLevel);
@@ -35,7 +34,7 @@ public class ResetCommand extends AbstractCommand {
 
 	@Override
 	public Command parse(String[] commandWords) {
-		if(matchCommand(commandWords[0])) {
+		if(matchCommandName(commandWords[0])) {
 			if(commandWords.length > 1) {
 				cambio_level = true;
 				this.nLevel = Integer.parseInt(commandWords[1]);
