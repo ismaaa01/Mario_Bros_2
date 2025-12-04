@@ -48,17 +48,28 @@ public class Messages {
 	// Errores de factorías:
 	public static final String UNKNOWN_COMMAND = "Unknown command: %s";
 	public static final String INVALID_GAME_OBJECT = "Invalid game object: %s";
+	public static final String UNKNOWN_OBJECT = "Unknown game object: %s";
 	// Errores de commandos:
 	public static final String COMMAND_PARAMETERS_MISSING = "Missing parameters";
 	public static final String COMMAND_INCORRECT_PARAMETER_NUMBER = "Incorrect parameter number";
 	public static final String UNKNOWN_ACTION = "Unknown action: \"%s\"";
+	public static final String UNKNOWN_MOVING_DIRECTION = "Unknown moving object direction: %s";
+	public static final String INVALID_MOVING_DIR = "Invalid moving object direction: %s";
 	public static final String ILLEGAL_ACTION = "Illegal action: \"%s\"";
 	public static final String INVALID_COMMAND = "Invalid command: %s";
 	public static final String INVALID_COMMAND_PARAMETERS = "Invalid command parameters";
 	public static final String ERROR_COMMAND_EXECUTE = "Command execute problem";
-
-	
+	public static final String INCORRECT_COMMAND = "Incorrect '%s command'";
+	public static final String EXCECUTE_PROBLEM = "Command execute problem";
+	public static final String OFFBOARD_ERROR = "Object position is off board: %s";
+	public static final String INVALID_POSITION = "Invalid position: %s";
+	public static final String ARGS_PARSE_ERROR = "Object parse error, too much args: \"%s\"";
+	public static final String INVALID_BOX_STATUS = "Invalid Box status: %s";
 	public static final String HELP_AVAILABLE_COMMANDS = "Available commands:";
+	public static final String INVALID_MARIO_SIZE = "Invalid Mario size: %s";
+	public static final String SAVE_ERROR = "Unable to load game configuration from file \"%s\"";
+	public static final String SAVE_SUCCESS = "   File \"%s\" correctly saved \n";
+	
 	@Deprecated
 	/* @formatter:off */
 	public static final String[] HELP_LINES = new String[] { HELP_AVAILABLE_COMMANDS,
@@ -108,7 +119,13 @@ public class Messages {
 	public static final String COMMAND_ADDOBJECT_SHORTCUT = "aO"; 
 	public static final String COMMAND_ADDOBJECT_DETAILS = "[a]dd[O]bject <object_description>"; 
 	public static final String COMMAND_ADDOBJECT_HELP = "adds to the board the object given by object_description."
-			+"\n"+ "      <object_description> = (col,row) objName [dir [BIG|SMALL]]. Ej. (12,3) Mario LEFT SMALL"; 
+			+"\n"+ "      <object_description> = (col,row) objName [dir [BIG|SMALL]]. Ej. (12,3) Mario LEFT SMALL";
+	
+	//SAVE
+	public static final String COMMAND_SAVE_NAME = "save"; 
+	public static final String COMMAND_SAVE_SHORTCUT = "s"; 
+	public static final String COMMAND_SAVE_DETAILS = "[s]ave <fileName>"; 
+	public static final String COMMAND_SAVE_HELP = "save the actual configuration in text file <fileName>";
 
 	//LAND
 	public static final String LAND_NAME = "land";

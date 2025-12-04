@@ -69,7 +69,13 @@ public class GameObjectContainer {
 	    return interact;
 	}
 	
-	    
+	public String stringify() {
+		String container = "";
+		for(GameObject object:objects) {
+			container += object.stringify() + '\n';
+		}
+		return container;
+	}
 	
 	@Override
 	public String toString() {

@@ -1,9 +1,9 @@
 package tp1_2.logic;
 
+import tp1_2.exceptions.GameModelException;
 import tp1_2.logic.gameobjects.GameObject;
 
 public interface GameModel {
-	
 	
 	public boolean isFinished();
 	
@@ -18,5 +18,7 @@ public interface GameModel {
 	public void exit();
 	
 	public void add_obj(GameObject obj);
+	
+	public void save(String FileName)throws GameModelException;
 	
 }

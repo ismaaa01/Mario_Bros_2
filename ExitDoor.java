@@ -15,7 +15,7 @@ public class ExitDoor extends GameObject {
 	}
 	
 	public  ExitDoor(GameWorld game,Position pos){
-		super(game,pos);
+		super(game,pos,Name,Shortcut);
 	}
 	
 	@Override

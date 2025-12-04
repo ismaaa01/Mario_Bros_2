@@ -1,6 +1,8 @@
 package tp1_2.logic.gameobjects;
 
 import tp1_2.view.Messages;
+import tp1_2.exceptions.ActionParseException;
+import tp1_2.exceptions.GameParseException;
 import tp1_2.logic.Action;
 import tp1_2.logic.ActionList;
 import tp1_2.logic.GameWorld;
@@ -26,7 +28,7 @@ public class Mario extends MovingObject {
 	
 	
 	public Mario(GameWorld game, Position pos) {
-		super (game,pos,initial);
+		super (game,pos,initial,Name,Shortcut);
 		lose_big = false;
 		pos_big = new Position(pos.get_row()-1,pos.get_col());
 	}
@@ -168,23 +170,37 @@ public class Mario extends MovingObject {
 		return true;
 	}
 	
-	public GameObject parse(String[] info,Position pos) {
+	public GameObject parse(String[] info,Position pos)throws GameParseException {
+		if(matchObjName(info[0]) && info.length > 3)
+				throw new GameParseException(Messages.ARGS_PARSE_ERROR);
+		
 		if(matchObjName(info[0])) {
 			this.pos = pos;
-			Action initial = give_act(info[1]);
-			if(initial != null) {
+			try {
+				Action initial = give_act(info[1]);
+				if(initial == Action.UP || initial == Action.DOWN) throw new ActionParseException(Messages.INVALID_MOVING_DIR.formatted(info));
 				dir = initial;
 				dir_h = initial;
-				if(info[info.length -1].equalsIgnoreCase("B") || info[info.length -1].equalsIgnoreCase("big")) {
-					isBig = true;
-				}else {
-					isBig = false;
-				}
-				lose_big = false;
-				
+			}catch(ActionParseException e) {
+				throw new GameParseException(Messages.UNKNOWN_MOVING_DIRECTION,e);
 			}
+			if(!(info[info.length -1].equalsIgnoreCase("s") || info[info.length -1].equalsIgnoreCase("small")) && !(info[info.length -1].equalsIgnoreCase("b") || info[info.length -1].equalsIgnoreCase("big")))
+				throw new GameParseException(Messages.INVALID_MARIO_SIZE);
+			if(info[info.length -1].equalsIgnoreCase("s") || info[info.length -1].equalsIgnoreCase("small")) {
+				isBig = false;
+			}else {
+				isBig = true;
+				pos_big = new Position(pos.get_row()-1,pos.get_col());
+			}
+			lose_big = false;
 			return this;
 		}
 		return null;
+	}
+	
+	public String stringify() {
+		String str = super.stringify() + " ";
+		str += isBig ? "Big" : "Small";
+		return str;
 	}
 }

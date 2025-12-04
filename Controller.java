@@ -4,7 +4,7 @@ import tp1_2.control.commands.Command;
 import tp1_2.control.commands.CommandGenerator;
 import tp1_2.logic.GameModel;
 import tp1_2.view.GameView;
-import tp1_2.view.Messages;
+import tp1_2.exceptions.*;
 
 /**
  *  Accepts user input and coordinates the game execution logic
@@ -31,12 +31,18 @@ public class Controller {
 		
 		while ( !game.isFinished()) {
 			String[] words = view.getPrompt();
-			Command command = CommandGenerator.parse(words);
-
-			if (command != null)
+			try {
+				Command command = null;
+				command = CommandGenerator.parse(words);
 				command.execute(game, view);
-			else 
-				view.showError(Messages.UNKNOWN_COMMAND.formatted(String.join(" ", words)));
+			}catch(Exception exc) {
+				view.showError(exc.getMessage());
+				Throwable cause = exc.getCause();
+				while(cause != null) {
+					view.showError(cause.getMessage());
+					cause = cause.getCause();
+				}
+			}
 		}
 		view.showEndMessage();
 	}

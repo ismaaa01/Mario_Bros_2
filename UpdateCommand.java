@@ -20,12 +20,6 @@ public class UpdateCommand extends NoParamsCommand {
 		game.update();
 		view.showGame();
 	}
-	public Command parse(String[] commandWords) {
-		if(matchCommand(commandWords[0]) || commandWords[0].length()==0) 
-			return this;
-		return null;
-	}
-
 
 	public boolean matchCommand(String c) {
 		return super.matchCommandName(c) || c.length() == 0;

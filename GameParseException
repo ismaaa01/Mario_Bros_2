@@ -1,0 +1,7 @@
+package tp1_2.exceptions;
+
+
+public class GameParseException extends GameModelException{
+
+
+}

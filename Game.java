@@ -2,7 +2,15 @@ package tp1_2.logic;
 
 
 import tp1_2.logic.gameobjects.*;
-import java.util.*;
+import tp1_2.view.Messages;
+
+import java.util.ArrayList;
+import java.util.List;
+import tp1_2.exceptions.GameModelException;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 public class Game implements GameModel, GameStatus,GameWorld{
@@ -19,7 +27,7 @@ public class Game implements GameModel, GameStatus,GameWorld{
 	private boolean win;
 	private boolean running;
 	private List<GameObject> inserted_objects;
-
+	
 	
 	public Game(int nLevel) {
 		this.points = 0;
@@ -27,7 +35,7 @@ public class Game implements GameModel, GameStatus,GameWorld{
 		this.nlives = 3;
 		this.win = false;
 		this.running = true;
-		inserted_objects = new ArrayList();
+		this.inserted_objects = new ArrayList<GameObject>();
 		switch (nLevel){
 		case 2: initLevel2(); break;
 		case 1: initLevel1(); break;
@@ -49,6 +57,29 @@ public class Game implements GameModel, GameStatus,GameWorld{
 		inserted_objects.add(obj);
 	} 
 	//GameModel:
+	
+	private String stringify() {
+		String game_string = String.valueOf(this.remainingTime)+ " " + String.valueOf(this.points) + " " + String.valueOf(this.nlives)+ '\n';
+		game_string += gameObjects.stringify();
+		return game_string;
+	}
+	
+	public void save(String FileName)throws GameModelException{
+		FileOutputStream out ;
+		try {
+			out = new FileOutputStream(FileName);
+			String game_string = stringify();
+			for(int i = 0; i < game_string.length() ; i++) {
+				out.write(game_string.charAt(i));
+			}
+			if (out != null) {
+	                out.close();
+	        }
+		}catch(IOException e) {
+			throw new GameModelException(Messages.SAVE_ERROR.formatted(FileName));
+		}
+		
+	}
 	
 	public void give_actions_to_mario(ActionList act_list ) {
 		this.mario.receive_actions(act_list);

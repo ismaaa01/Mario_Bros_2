@@ -17,13 +17,9 @@ public class Mushroom extends MovingObject {
 	}
 	
 	public Mushroom(GameWorld game,Position pos) {
-		super(game,pos,initial_dir);
+		super(game,pos,initial_dir,Name,Shortcut);
 	}
 	
-	public Mushroom(GameWorld game,Position pos,Action initial) {
-		super(game,pos,initial_dir);
-		dir = initial;
-	}
 
 	@Override
 	public String getIcon() {
@@ -46,5 +42,14 @@ public class Mushroom extends MovingObject {
 			super.dead();
 		}
 		return true;
+	}
+	
+	public boolean receiveInteraction(Box obj) {
+		if(prev != null) {
+			pos.do_action(prev);
+		}
+		update_dir();
+		mouvement_auto();
+		return false;
 	}
 }

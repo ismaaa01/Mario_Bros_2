@@ -20,7 +20,7 @@ public class Goombas extends MovingObject {
 	}
 	
 	public Goombas(GameWorld game,Position pos) {
-		super(game,pos,initial);
+		super(game,pos,initial,Name,Shortcut);
 	}
 	
 	public String getIcon() {
@@ -53,5 +53,14 @@ public class Goombas extends MovingObject {
 			game.addPoints(100);
 		}
 		return true;
+	}
+	
+	public  boolean receiveInteraction(Box obj) {
+		if(prev != null) {
+			pos.do_action(prev);
+		}
+		update_dir();
+		mouvement_auto();
+		return false;
 	}
 }

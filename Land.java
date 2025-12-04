@@ -17,7 +17,7 @@ public class Land extends GameObject {
 	}
 	
 	public Land(GameWorld game,Position pos) {
-		super(game,pos);
+		super(game,pos,Name,Shortcut);
 	}
 	
 	public boolean isSolid() {

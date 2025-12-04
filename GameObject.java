@@ -2,6 +2,9 @@ package tp1_2.logic.gameobjects;
 
 import tp1_2.logic.GameWorld;
 import tp1_2.logic.Position;
+import tp1_2.view.Messages;
+import tp1_2.exceptions.GameParseException;
+import tp1_2.exceptions.ObjectParseException;
 
 public abstract class GameObject implements GameItem{ 
 
@@ -17,18 +20,23 @@ public abstract class GameObject implements GameItem{
 		this.isAlive = true;
 	}
 	
-	public GameObject(GameWorld game, Position pos) {
+	public GameObject(GameWorld game, Position pos,String name,String shortcut) {
 		this.isAlive = true;
 		this.pos = pos;
 		this.game = game;
+		this.Name = name;
+		this.Shortcut = shortcut;
 	}
 	
 	public void receive_world(GameWorld game){
 		this.game = game;
 	}
 	
-	public GameObject parse(String[] info,Position pos) {
-		if(info.length == 1 && matchObjName(info[0])) {
+	public GameObject parse(String[] info,Position pos) throws GameParseException{
+		if(matchObjName(info[0]) && info.length > 1) 
+			throw new ObjectParseException(Messages.ARGS_PARSE_ERROR);
+
+		if(matchObjName(info[0])) {
 			this.pos = pos;
 			return this;
 		}
@@ -37,6 +45,12 @@ public abstract class GameObject implements GameItem{
 	
 	public boolean matchObjName(String n) {
 		return (n.equalsIgnoreCase(Name) || n.equalsIgnoreCase(Shortcut));
+	}
+	
+	public String stringify() {
+		String str = "(";
+		str += String.valueOf(pos.get_row())+","+String.valueOf(pos.get_col())+")" + " "+ this.Name;
+		return str;
 	}
 	
 	public boolean isInPosition(Position p) {

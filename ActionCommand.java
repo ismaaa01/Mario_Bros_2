@@ -5,6 +5,7 @@ import tp1_2.view.GameView;
 import tp1_2.view.Messages;
 import tp1_2.logic.ActionList;
 import tp1_2.logic.Action;
+import tp1_2.exceptions.*;
 import java.util.*;
 
 public class ActionCommand extends AbstractCommand {
@@ -35,14 +36,18 @@ public class ActionCommand extends AbstractCommand {
 	}
 
 	@Override
-	public Command parse(String[] commandWords) {
-		if(commandWords.length < 2) {return null;}
+	public Command parse(String[] commandWords) throws CommandParseException {
+		if(commandWords.length < 2 && matchCommandName(commandWords[0]))
+			throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+			
 		if(super.matchCommandName(commandWords[0])) {
 			int act_p = 1;
 			while (act_p < commandWords.length) {
 				recorre_actions(commandWords[act_p]);
 				act_p++;
 			}
+			if (act_list.size()==0)
+				throw new CommandParseException(Messages.INCORRECT_COMMAND.formatted(commandWords[0]) + ", because the action list is empty (all actions are unknown).");
 			return this;
 		}
 		return null;

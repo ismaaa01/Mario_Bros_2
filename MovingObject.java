@@ -1,13 +1,16 @@
 package tp1_2.logic.gameobjects;
 
 import tp1_2.logic.Position;
+import tp1_2.view.Messages;
 import tp1_2.logic.Action;
 import tp1_2.logic.GameWorld;
+import tp1_2.exceptions.*;
 
 public abstract class MovingObject extends GameObject {
 	
 	protected Action dir;
 	protected Action dir_h;
+	protected Action prev;
 	
 	public MovingObject(String Name,String Shortcut,Action initial) {
 		super(Name,Shortcut);
@@ -15,8 +18,8 @@ public abstract class MovingObject extends GameObject {
 		dir_h = initial;
 	}
 	
-	public MovingObject(GameWorld game, Position pos,Action initial ) {
-		super(game,pos);
+	public MovingObject(GameWorld game, Position pos,Action initial,String name, String shortcut) {
+		super(game,pos,name,shortcut);
 		this.dir = initial;
 		this.dir_h = initial;
 	}
@@ -25,14 +28,19 @@ public abstract class MovingObject extends GameObject {
 		return false;
 	}
 
-	public GameObject parse(String[] info,Position pos) {
+	public GameObject parse(String[] info,Position pos)throws GameParseException {
+		if(matchObjName(info[0]) && info.length > 2)
+			throw new ObjectParseException(Messages.ARGS_PARSE_ERROR.formatted(info));
 		if(matchObjName(info[0])) {
 			this.pos = pos;
 			if(info.length > 1) {
-				Action initial = give_act(info[1]);
-				if(initial != null) {
+				try {
+					Action initial = give_act(info[1]);
+					if(initial == Action.UP || initial == Action.DOWN) throw new ActionParseException(Messages.INVALID_MOVING_DIR.formatted(info));
 					dir = initial;
 					dir_h = initial;
+				}catch(ActionParseException e) {
+					throw new GameParseException(Messages.UNKNOWN_MOVING_DIRECTION,e);
 				}
 			}
 			return this;
@@ -70,6 +78,7 @@ public abstract class MovingObject extends GameObject {
 		if(super.isAlive() && pos.in_game()) {
 			if(verifica_act(dir)) {
 				pos.do_action(dir);
+				save_prev(dir);
 			}else {
 				reverse_dir();
 			}
@@ -87,7 +96,7 @@ public abstract class MovingObject extends GameObject {
 	@Override
 	public abstract String getIcon();
 	
-	protected Action give_act(String dir_initial) {
+	protected Action give_act(String dir_initial) throws ActionParseException{
 		if(dir_initial.equalsIgnoreCase("LEFT") || dir_initial.equalsIgnoreCase("L")) {
 			return Action.LEFT;
 		}
@@ -97,6 +106,24 @@ public abstract class MovingObject extends GameObject {
 		if(dir_initial.equalsIgnoreCase("RIGHT") || dir_initial.equalsIgnoreCase("R")) {
 			return Action.RIGHT;
 		}
-		return null;
+		throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(dir_initial));
+	}
+	
+	private void save_prev(Action act) {
+		if(act == Action.RIGHT) {
+			prev = Action.LEFT;
+		}else if(act == Action.LEFT) {
+			prev = Action.RIGHT;
+		}else if(act == Action.UP) {
+			prev = Action.DOWN;
+		}else if(act == Action.DOWN) {
+			prev = Action.UP;
+		}
+	}
+	
+	public String stringify() {
+		String str = super.stringify() + " ";
+		str += dir.toString();
+		return str;
 	}
 }
