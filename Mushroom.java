@@ -20,6 +20,10 @@ public class Mushroom extends MovingObject {
 		super(game,pos,initial_dir,Name,Shortcut);
 	}
 	
+	public Mushroom(Mushroom save) {
+		super(save);
+	}
+	
 
 	@Override
 	public String getIcon() {
@@ -51,5 +55,10 @@ public class Mushroom extends MovingObject {
 		update_dir();
 		mouvement_auto();
 		return false;
+	}
+
+	@Override
+	public GameObject clonar() {
+		return new Mushroom(this);
 	}
 }

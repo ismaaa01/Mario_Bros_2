@@ -24,23 +24,30 @@ public abstract class MovingObject extends GameObject {
 		this.dir_h = initial;
 	}
 	
+	public MovingObject(MovingObject save) {
+		super(save);
+		this.dir = save.dir;
+		this.dir_h = save.dir_h;
+		this.prev = save.prev;
+	}
+	
 	public boolean isSolid() {
 		return false;
 	}
 
 	public GameObject parse(String[] info,Position pos)throws GameParseException {
 		if(matchObjName(info[0]) && info.length > 2)
-			throw new ObjectParseException(Messages.ARGS_PARSE_ERROR.formatted(info));
+			throw new ObjectParseException(Messages.ARGS_PARSE_ERROR);
 		if(matchObjName(info[0])) {
 			this.pos = pos;
 			if(info.length > 1) {
 				try {
 					Action initial = give_act(info[1]);
-					if(initial == Action.UP || initial == Action.DOWN) throw new ActionParseException(Messages.INVALID_MOVING_DIR.formatted(info));
+					if(initial == Action.UP || initial == Action.DOWN) throw new GameParseException(Messages.INVALID_MOVING_DIR);
 					dir = initial;
 					dir_h = initial;
 				}catch(ActionParseException e) {
-					throw new GameParseException(Messages.UNKNOWN_MOVING_DIRECTION,e);
+					throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(info[1]));
 				}
 			}
 			return this;
@@ -72,6 +79,7 @@ public abstract class MovingObject extends GameObject {
 		}else if(dir == Action.LEFT) {
 			dir_h = Action.RIGHT;
 		}
+		
 	}
 	
 	protected void mouvement_auto() {
@@ -106,10 +114,16 @@ public abstract class MovingObject extends GameObject {
 		if(dir_initial.equalsIgnoreCase("RIGHT") || dir_initial.equalsIgnoreCase("R")) {
 			return Action.RIGHT;
 		}
+		if(dir_initial.equalsIgnoreCase("UP") || dir_initial.equalsIgnoreCase("U")) {
+			return Action.UP;
+		}
+		if(dir_initial.equalsIgnoreCase("DOWN") || dir_initial.equalsIgnoreCase("D")) {
+			return Action.DOWN;
+		}
 		throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(dir_initial));
 	}
 	
-	private void save_prev(Action act) {
+	protected void save_prev(Action act) {
 		if(act == Action.RIGHT) {
 			prev = Action.LEFT;
 		}else if(act == Action.LEFT) {
@@ -121,9 +135,9 @@ public abstract class MovingObject extends GameObject {
 		}
 	}
 	
-	public String stringify() {
-		String str = super.stringify() + " ";
-		str += dir.toString();
+	public String toString() {
+		String str = super.toString() + " ";
+		str += dir_h.toString();
 		return str;
 	}
 }

@@ -23,6 +23,10 @@ public class Goombas extends MovingObject {
 		super(game,pos,initial,Name,Shortcut);
 	}
 	
+	public Goombas(Goombas save) {
+		super(save);
+	}
+	
 	public String getIcon() {
 		if(super.isAlive()) {
 			return icono;
@@ -62,5 +66,10 @@ public class Goombas extends MovingObject {
 		update_dir();
 		mouvement_auto();
 		return false;
+	}
+
+	@Override
+	public GameObject clonar() {
+		return new Goombas(this);
 	}
 }

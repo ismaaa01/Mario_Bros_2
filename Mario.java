@@ -3,6 +3,7 @@ package tp1_2.logic.gameobjects;
 import tp1_2.view.Messages;
 import tp1_2.exceptions.ActionParseException;
 import tp1_2.exceptions.GameParseException;
+import tp1_2.exceptions.ObjectParseException;
 import tp1_2.logic.Action;
 import tp1_2.logic.ActionList;
 import tp1_2.logic.GameWorld;
@@ -33,6 +34,14 @@ public class Mario extends MovingObject {
 		pos_big = new Position(pos.get_row()-1,pos.get_col());
 	}
 	
+	public Mario(Mario save) {
+		super(save);
+		this.isBig = save.isBig;
+		this.lose_big = false;
+		if (isBig)
+			this.pos_big = new Position(save.pos_big);
+	}
+	
 	public void receive_world(GameWorld game){
 		this.game = game;
 		game.receive_mario(this);
@@ -40,7 +49,7 @@ public class Mario extends MovingObject {
 	
 	public String getIcon() {
 		if(super.isAlive()) {
-			if(this.dir_h == Action.LEFT) {
+			if(this.dir_h== Action.LEFT) {
 				return icono_left;	
 			}else if(dir_h == Action.STOP) {
 				return icono_stop;
@@ -51,7 +60,8 @@ public class Mario extends MovingObject {
 	}
 	
 	public void reset_actions() {
-		actList.eliminate();
+		if(actList != null)
+			actList.eliminate();
 	}
 
 	public void receive_actions(ActionList act_list) {
@@ -74,25 +84,28 @@ public class Mario extends MovingObject {
 	private boolean actions_to_do() {
 		return actList != null && actList.in_action();
 	}
+
 	
 	@Override
 	public void update() {
+		update_dir();
 		lose_big = false;
-		if(actions_to_do()) {
+		if(actions_to_do() && (game.isSolid(pos.get_col(),pos.get_row()+Action.DOWN.getY()) || actList.goes_down())) {
 			for(int i = 0; i < actList.size();i++) {
 				dir = actList.get(i);
 				movement_player();
 				game.doInteractionsFrom(this);
 				lose_big = false;
 			}
-			reset_actions();
+			update_dir();
 		}else {
 			super.update();
 		}
-		update_dir();
+		
 		if(isBig) {
 			pos_big = new Position(this.pos.get_row()-1,this.pos.get_col());
 		}
+		reset_actions();
 	}
 	
 	public void reverse_dir() {
@@ -111,7 +124,7 @@ public class Mario extends MovingObject {
 			int nextCol = pos_big.get_col() + act.getX();
         	int nextRow = pos_big.get_row()  + act.getY();
 			if (act == Action.DOWN) {
-			return !game.isSolid(nextCol, nextRow);
+				return !game.isSolid(nextCol, nextRow);
 			}
         	if (!pos.in_game(nextCol, nextRow)) return false; 
         	return !game.isSolid(nextCol, nextRow);
@@ -132,7 +145,15 @@ public class Mario extends MovingObject {
 				}
 			}
 		}else {
-			super.mouvement_auto();
+			if(super.isAlive() && pos.in_game()) {
+				if(verifica_act(dir)) {
+					pos.do_action(dir);
+					save_prev(dir);
+				}else {
+					reverse_dir();
+				}
+			}
+			game.doInteractionsFrom(this);
 		}
 		if(isBig) pos_big = new Position(this.pos.get_row()-1,this.pos.get_col());
 	}
@@ -162,30 +183,46 @@ public class Mario extends MovingObject {
 	
 	public  boolean receiveInteraction(Mushroom obj) {
 		isBig = true;
+		this.pos_big = new Position(this.pos.get_row()-1,this.pos.get_col());
 		return true;
 	}
 	
 	public  boolean receiveInteraction(Box obj) {
-		pos.do_action(Action.DOWN);
-		return true;
+		if(dir == Action.UP) {
+			pos.do_action(Action.DOWN);
+			return true;
+		}else {
+			if(prev != null) {
+				pos.do_action(prev);
+			}
+			update_dir();
+			mouvement_auto();
+			if(isBig) pos_big = new Position(this.pos.get_row()-1,this.pos.get_col());
+			return false;
+		}
+		
 	}
 	
 	public GameObject parse(String[] info,Position pos)throws GameParseException {
 		if(matchObjName(info[0]) && info.length > 3)
-				throw new GameParseException(Messages.ARGS_PARSE_ERROR);
+				throw new ObjectParseException(Messages.ARGS_PARSE_ERROR);
 		
 		if(matchObjName(info[0])) {
 			this.pos = pos;
-			try {
-				Action initial = give_act(info[1]);
-				if(initial == Action.UP || initial == Action.DOWN) throw new ActionParseException(Messages.INVALID_MOVING_DIR.formatted(info));
-				dir = initial;
-				dir_h = initial;
-			}catch(ActionParseException e) {
-				throw new GameParseException(Messages.UNKNOWN_MOVING_DIRECTION,e);
+			if(info.length > 1) {
+				try {
+					Action initial = give_act(info[1]);
+					if(initial == Action.UP || initial == Action.DOWN) throw new GameParseException(Messages.INVALID_MOVING_DIR);
+					dir = initial;
+					dir_h = initial;
+				}catch(ActionParseException e) {
+					throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(info[1]));
+				}
+				if(info.length > 2) {
+					if(!(info[info.length -1].equalsIgnoreCase("s") || info[info.length -1].equalsIgnoreCase("small")) && !(info[info.length -1].equalsIgnoreCase("b") || info[info.length -1].equalsIgnoreCase("big")))
+						throw new GameParseException(Messages.INVALID_MARIO_SIZE);
+				}
 			}
-			if(!(info[info.length -1].equalsIgnoreCase("s") || info[info.length -1].equalsIgnoreCase("small")) && !(info[info.length -1].equalsIgnoreCase("b") || info[info.length -1].equalsIgnoreCase("big")))
-				throw new GameParseException(Messages.INVALID_MARIO_SIZE);
 			if(info[info.length -1].equalsIgnoreCase("s") || info[info.length -1].equalsIgnoreCase("small")) {
 				isBig = false;
 			}else {
@@ -198,9 +235,15 @@ public class Mario extends MovingObject {
 		return null;
 	}
 	
-	public String stringify() {
-		String str = super.stringify() + " ";
+	public String toString() {
+		String str = super.toString() + " ";
 		str += isBig ? "Big" : "Small";
 		return str;
+	}
+
+
+	@Override
+	public GameObject clonar() {
+		return new Mario(this);
 	}
 }

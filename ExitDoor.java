@@ -18,6 +18,10 @@ public class ExitDoor extends GameObject {
 		super(game,pos,Name,Shortcut);
 	}
 	
+	public ExitDoor(ExitDoor save) {
+		super(save);
+	}
+	
 	@Override
 	public String getIcon() {
 		return icono;
@@ -38,6 +42,11 @@ public class ExitDoor extends GameObject {
 	public boolean receiveInteraction(Mario obj) {
 	     game.marioExited();
 	     return false;
+	}
+
+	@Override
+	public GameObject clonar() {
+		return new ExitDoor(this);
 	}
 
 }

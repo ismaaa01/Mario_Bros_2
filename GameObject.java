@@ -3,6 +3,7 @@ package tp1_2.logic.gameobjects;
 import tp1_2.logic.GameWorld;
 import tp1_2.logic.Position;
 import tp1_2.view.Messages;
+
 import tp1_2.exceptions.GameParseException;
 import tp1_2.exceptions.ObjectParseException;
 
@@ -28,6 +29,15 @@ public abstract class GameObject implements GameItem{
 		this.Shortcut = shortcut;
 	}
 	
+	public GameObject(GameObject save) {
+		this.isAlive = true;
+		this.pos = new Position(save.pos);
+		this.Name = save.Name;
+		this.Shortcut = save.Shortcut;
+	}
+	
+	public abstract GameObject clonar();
+	
 	public void receive_world(GameWorld game){
 		this.game = game;
 	}
@@ -47,7 +57,7 @@ public abstract class GameObject implements GameItem{
 		return (n.equalsIgnoreCase(Name) || n.equalsIgnoreCase(Shortcut));
 	}
 	
-	public String stringify() {
+	public String toString() {
 		String str = "(";
 		str += String.valueOf(pos.get_row())+","+String.valueOf(pos.get_col())+")" + " "+ this.Name;
 		return str;

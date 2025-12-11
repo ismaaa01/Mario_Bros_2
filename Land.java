@@ -20,6 +20,10 @@ public class Land extends GameObject {
 		super(game,pos,Name,Shortcut);
 	}
 	
+	public Land(Land save) {
+		super(save);
+	}
+	
 	public boolean isSolid() {
 		return true;
 	}
@@ -30,4 +34,9 @@ public class Land extends GameObject {
 	}
 
 	public void update() {}
+
+	@Override
+	public GameObject clonar() {
+		return new Land(this);
+	}
 }

@@ -2,6 +2,7 @@ package tp1_2.logic.gameobjects;
 
 import tp1_2.view.Messages;
 import tp1_2.logic.Position;
+import tp1_2.logic.Action;
 import tp1_2.logic.GameWorld;
 import tp1_2.exceptions.GameParseException;
 import tp1_2.exceptions.ObjectParseException;
@@ -28,6 +29,14 @@ public class Box extends GameObject {
 	}
 	
 	
+	public Box(Box save) {
+		super(save);
+		open = save.open;
+	}
+	
+	public GameObject clonar() {
+		return new Box(this);
+	}
 	
 	@Override
 	public void update() {}
@@ -40,14 +49,14 @@ public class Box extends GameObject {
 	
 	public GameObject parse(String[] info,Position pos) throws GameParseException{
 		if(matchObjName(info[0]) && info.length > 2)
-			throw new GameParseException(Messages.ARGS_PARSE_ERROR.formatted(info));
+			throw new GameParseException(Messages.ARGS_PARSE_ERROR);
 		if(matchObjName(info[0])) {
 			this.pos = pos;
 			if(info.length > 1) {
 				try {
 				open = give_state(info[1]);
 				}catch (ObjectParseException e) {
-					throw new GameParseException(Messages.INVALID_BOX_STATUS.formatted(info));
+					throw new GameParseException(Messages.INVALID_BOX_STATUS);
 				}
 			}
 			return this;
@@ -77,7 +86,7 @@ public class Box extends GameObject {
 	}
 	
 	public boolean receiveInteraction(Mario obj) {
-		if(!open) {
+		if(!open && obj.dir == Action.UP) {
 			GameObjectFactory.open_box(pos, game);
 			open = true;
 			game.addPoints(50);
@@ -85,8 +94,8 @@ public class Box extends GameObject {
 		return true;
 	}
 	
-	public String stringify() {
-		String str = super.stringify() + " ";
+	public String toString() {
+		String str = super.toString() + " ";
 		str += open ? "Empty" : "Full";
 		return str;
 	}
