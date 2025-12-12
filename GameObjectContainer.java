@@ -1,12 +1,14 @@
 package tp1_2.logic;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import tp1_2.logic.gameobjects.GameItem;
 import tp1_2.logic.gameobjects.GameObject;
 import tp1_2.view.Messages;
+import java.lang.StringBuilder;
 
-public class GameObjectContainer {
+final class GameObjectContainer {
 	
 	private List<GameObject> objects;
 
@@ -17,7 +19,7 @@ public class GameObjectContainer {
 	public void add(GameObject object) {
 		this.objects.add(object);
 	}
-	
+
 	public boolean isSolid(int col, int row) {
 		Position p = new Position(row,col);
 		for (GameObject object:objects) {
@@ -69,16 +71,11 @@ public class GameObjectContainer {
 	    return interact;
 	}
 	
-	public String stringify() {
-		String container = "";
-		for(GameObject object:objects) {
-			container += object.stringify() + '\n';
-		}
-		return container;
-	}
-	
-	@Override
 	public String toString() {
-		return "I'm the game object container";
+		StringBuilder container = new StringBuilder();
+		for(GameObject object:objects) {
+			container.append(object+"\n");
+		}
+		return container.toString();
 	}
 }
