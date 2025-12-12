@@ -71,11 +71,11 @@ final class GameObjectContainer {
 	    return interact;
 	}
 	
-	public String toString() {
-		StringBuilder container = new StringBuilder();
+	public String stringify() {
+		String container;
 		for(GameObject object:objects) {
-			container.append(object+"\n");
+			container+ = object.toString() + "\n";
 		}
-		return container.toString();
+		return container;
 	}
 }
